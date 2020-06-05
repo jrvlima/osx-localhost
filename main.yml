@@ -1,0 +1,20 @@
+---
+- name: "setup localhost"
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: check drivers tap homebrew
+      command: ls /usr/local/Homebrew/Library/Taps/homebrew/homebrew-cask-drivers
+      register: drivers_contents
+    - name: enable cask drivers
+      shell: |
+        brew tap homebrew/cask-drivers
+      when: drivers_contents.stdout == ""
+    - name: install casks
+      homebrew_cask:
+        name: [mysqlworkbench, mactex, wacom-tablet, sketchbook, steam, adobe-creative-cloud, 1password, 1password-cli, alfred, bootstrap-studio, chromium, zoom, karabiner-elements, setapp, dash, visual-studio, cacher, brave-browser, chef/chef/chef-workstation, dotnet-sdk, vagrant, postman, tunnelblick, powershell, firefox, staruml, 1password, dropbox, google-backup-and-sync, jetbrains-toolbox, microsoft-office, sourcetree,iterm2, visual-studio-code, setapp, google-chrome, slack, docker, kindle, whatsapp, parallels, oracle-jdk, telegram, tidal, spotify, evernote, skype, mailbutler, telegram-desktop]
+        state: present
+    - name: install brew packages
+      homebrew:
+        name: [mysql, terragrunt, fzf, htop, warrensbox/tap/tfswitch, awscli, packer, packer, putty, telnet, jq, tree, aws-iam-authenticator, docker-credential-helper-ecr, git, kubectl, doctl, vault, zsh, helm]
+        state: present
